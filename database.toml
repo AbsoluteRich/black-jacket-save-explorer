@@ -1,0 +1,82 @@
+[blank]
+[blank.death]
+cf4f9678-d3ba-4de4-8321-f731a5c2281a = "5"
+ca49f2d9-1c50-45c7-a52e-0dd6228478c9 = "4"
+e3dc3323-8471-4586-aec6-15abd1b29988 = "6"
+
+[blank.greed]
+99f0cd1c-d90f-4c16-976a-6d308627b29f = "3"
+29ad5297-3d62-4151-9c14-722a0c9ea8a5 = "7"
+
+[blank.diamonds]
+a0fd900e-028f-4ef0-8425-44429a1e12c2 = "2"
+
+[awakened]
+[awakened.clubs]
+4afcfe86-0166-46e5-a107-f4467cdfe09f = "Ace"
+945ba3aa-7a34-4540-9b6d-69aeaf073f19 = "2"
+15381889-fbdc-4aa6-8287-40e30cab712f = "6"
+e26cdc8c-ead1-4cdb-b9c9-1ec3887feeeb = "9"
+
+[awakened.spades]
+949ffbc9-19aa-444d-ba92-11ff36670950 = "Impulse"
+6c7a3725-e7eb-4822-875e-c5660c370e53 = "Shame"
+4424bbb1-6006-4d31-b546-e296035344f1 = "5"
+
+[awakened.greed]
+0c304e58-5ccc-4258-b4e9-168481557cbe = "3"
+fc9377cf-5b85-4153-9e34-c5ea6c14697b = "9"
+92882030-6a7a-4922-9307-cb469f96e6db = "7"
+07f35171-3f1a-4cff-b3de-6414ef9ec44b = "4"
+eb98a654-02c8-4677-9de2-6e51af207c5d = "2"
+
+[awakened.tumors]
+c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
+74c5c094-d231-4c8b-9f41-4e859e412c81 = "6"
+
+[awakened.teeth]
+0646b0bc-eb9d-4a97-8da2-45049f0f59d4 = "Ace"
+25524385-edcd-4abd-be44-9f44288f180c = "3"
+598638f3-b505-49bf-b4ce-2caa9e59b218 = "10"
+2291b02c-b908-4b3b-97b2-464683a8430f = "4"
+36c72096-c03a-4a93-9fb2-83f14e306b08 = "2"
+
+[awakened.hearts]
+ead57508-17b7-44a8-b52a-8d5ea98263ed = "4"
+22defd7b-3234-417a-922d-2bba04040435 = "6"
+9f237cbb-ca9f-4841-af08-45bcfe7cea4c = "Ace"
+
+[awakened.diamonds]
+bd636b5d-7308-4e1b-be8a-0ce9ec7afa65 = "8"
+b0de53a2-0259-44c5-b70f-896ce5156ea4 = "3"
+7949b2d9-b721-484e-af68-77ced020b163 = "2"
+3bd851d0-8278-4d13-b233-4248252d44c4 = "5"
+
+[awakened.flames]
+2ba7f3ee-ea2b-4ccc-99b5-245e1ff02003 = "10"
+98aef635-d240-4793-96d1-a37a73b8a376 = "Ace"
+88f4f588-2300-4053-a4f3-d00815ad7684 = "4"
+de16d9d5-0f6d-4e00-966e-5b8af7595189 = "7"
+56037f9b-a9c1-404b-b16e-3b6d1b7eab6d = "3"
+a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
+d85b986f-4d1e-40ae-a5de-9d64ae7221f2 = "5"
+d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
+
+[awakened.time]
+0243b68f-de93-463c-88e2-cb69da875acf = "Matriarch"
+
+[awakened.death]
+8d791685-370a-489e-a821-97e49a8fe038 = "Lost Soul"
+639c7947-59ab-4095-961e-cd681ea74077 = "???"
+
+[face]
+[face.shame]
+d7e84cec-3a97-4cc3-854c-263abd6217df = "Ivel"
+c4a1c24c-0bef-4c20-93d6-624100604412 = "Outcast"
+2ef10a33-67d3-49a1-bd3f-d1c605a04f25 = "Crowd (Gossip)"
+b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
+50eb5f69-e53c-46ae-9df9-9d1402448c00 = "Ward"
+
+[face.vice]
+84116a01-a0b1-499a-804c-2a6c92950749 = "Mania"
+73642f80-b1f2-42ff-8891-ba3ee79e1c90 = "Virtue (Dead)"

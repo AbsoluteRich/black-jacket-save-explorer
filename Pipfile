@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+tomlkit = "*"
+platformdirs = "*"
+flatten-dict = "*"
+
+[dev-packages]
+toml-sort = "*"
+
+[requires]
+python_version = "3.12"
