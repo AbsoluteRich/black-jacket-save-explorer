@@ -64,14 +64,14 @@ if __name__ == "__main__":
 
             try:
                 print("What card is this?")
-                group = input("Type (blank/awakened/face): ")
+                group = input("Type (blank/awakened/face): ").lower()
                 if group == "face":
                     suit_or_set = input("Set: ")
                 else:
                     suit_or_set = input("Suit: ")
                 # We're not doing comparisons, so casefold is unnecessarily aggressive
                 suit_or_set = suit_or_set.lower()
-                value = input("Value: ")
+                value = input("Value: ").title()
 
                 if suit_or_set not in mapped_guids[group]:
                     mapped_guids[group][suit_or_set] = {}
