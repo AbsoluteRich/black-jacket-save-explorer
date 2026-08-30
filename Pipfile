@@ -10,6 +10,7 @@ flatten-dict = "*"
 
 [dev-packages]
 toml-sort = "*"
+auto-py-to-exe = "*"
 
 [requires]
 python_version = "3.12"

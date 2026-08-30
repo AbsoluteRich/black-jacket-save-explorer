@@ -69,3 +69,5 @@ if __name__ == "__main__":
                     print(f"Blank {value} of {suit_or_set.title()}")
             case "face":
                 print(value)
+
+    input("\nPress Enter to exit.")
