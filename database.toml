@@ -7,9 +7,28 @@ e3dc3323-8471-4586-aec6-15abd1b29988 = "6"
 [blank.greed]
 99f0cd1c-d90f-4c16-976a-6d308627b29f = "3"
 29ad5297-3d62-4151-9c14-722a0c9ea8a5 = "7"
+24e00f62-4a41-4d45-864b-4a5625771cfd = "Ace"
+aa12007a-84b3-46c6-a1fe-0b9753162e47 = "4"
+57269651-e004-4ba4-8091-117ee69e2733 = "6"
+2d755a3a-f25a-448e-afc9-d243542dfe0e = "8"
 
 [blank.diamonds]
 a0fd900e-028f-4ef0-8425-44429a1e12c2 = "2"
+
+[blank.teeth]
+d21b81e4-ec5b-43fc-bb4b-f836b576e49f = "5"
+02cfa6f3-dc8a-4415-ad80-8c86a7933efe = "4"
+
+[blank.clubs]
+9f2e01f8-9907-4222-9918-2792c33efcca = "6"
+
+[blank.hearts]
+84aae59f-7528-429d-892e-3da4f4f442a5 = "2"
+f875dd02-d70e-46f8-b225-9c4643c26960 = "3"
+2c16ee98-0c1c-4d7f-ab49-c7255739905c = "4"
+c8534bc9-8639-499e-8764-b4c45aa205e4 = "5"
+0118d82b-7865-4dd6-87d4-030b356e4f13 = "8"
+770e5522-61a8-4401-9265-3fc2b19df968 = "9"
 
 [awakened]
 [awakened.clubs]
@@ -17,6 +36,8 @@ a0fd900e-028f-4ef0-8425-44429a1e12c2 = "2"
 945ba3aa-7a34-4540-9b6d-69aeaf073f19 = "2"
 15381889-fbdc-4aa6-8287-40e30cab712f = "6"
 e26cdc8c-ead1-4cdb-b9c9-1ec3887feeeb = "9"
+94842002-1962-4ff9-b4d6-77e73f23c48a = "4"
+ecb0a093-cf6c-494a-9351-9a34500cca6d = "3"
 
 [awakened.spades]
 949ffbc9-19aa-444d-ba92-11ff36670950 = "Impulse"
@@ -29,6 +50,8 @@ fc9377cf-5b85-4153-9e34-c5ea6c14697b = "9"
 92882030-6a7a-4922-9307-cb469f96e6db = "7"
 07f35171-3f1a-4cff-b3de-6414ef9ec44b = "4"
 eb98a654-02c8-4677-9de2-6e51af207c5d = "2"
+e2c220a7-77b4-46f8-9bf6-54cde9a70e85 = "8"
+d64ab9b8-37d2-4c7b-a4f6-ba3cd357a256 = "10"
 
 [awakened.tumors]
 c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
@@ -40,11 +63,16 @@ c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
 598638f3-b505-49bf-b4ce-2caa9e59b218 = "10"
 2291b02c-b908-4b3b-97b2-464683a8430f = "4"
 36c72096-c03a-4a93-9fb2-83f14e306b08 = "2"
+17953d18-9a42-4218-a11b-849c84f9fc18 = "6"
 
 [awakened.hearts]
 ead57508-17b7-44a8-b52a-8d5ea98263ed = "4"
 22defd7b-3234-417a-922d-2bba04040435 = "6"
 9f237cbb-ca9f-4841-af08-45bcfe7cea4c = "Ace"
+4b7c05c4-b787-4364-a032-1135f564b932 = "5"
+975b107d-e768-4351-b696-d1de18617add = "7"
+a1a101d8-249f-4f0a-9575-138f8092a001 = "10"
+8fb8c131-98dd-4e5c-a5e9-a263556876c7 = "9"
 
 [awakened.diamonds]
 bd636b5d-7308-4e1b-be8a-0ce9ec7afa65 = "8"
@@ -76,6 +104,7 @@ c4a1c24c-0bef-4c20-93d6-624100604412 = "Outcast"
 2ef10a33-67d3-49a1-bd3f-d1c605a04f25 = "Crowd (Gossip)"
 b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
 50eb5f69-e53c-46ae-9df9-9d1402448c00 = "Ward"
+2119a86c-0ae8-4fee-81ee-b336bef14b1c = "Ivel (Ashamed)"
 
 [face.vice]
 84116a01-a0b1-499a-804c-2a6c92950749 = "Mania"
