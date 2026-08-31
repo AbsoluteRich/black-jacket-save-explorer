@@ -26,6 +26,8 @@ d21b81e4-ec5b-43fc-bb4b-f836b576e49f = "5"
 
 [blank.clubs]
 9f2e01f8-9907-4222-9918-2792c33efcca = "6"
+ab27719d-a490-4561-9639-948d8cdabb58 = "3"
+5ff5f96f-f7bf-407c-b6c4-855ffed4af21 = "9"
 
 [blank.hearts]
 84aae59f-7528-429d-892e-3da4f4f442a5 = "2"
@@ -46,6 +48,7 @@ a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 e26cdc8c-ead1-4cdb-b9c9-1ec3887feeeb = "9"
 94842002-1962-4ff9-b4d6-77e73f23c48a = "4"
 ecb0a093-cf6c-494a-9351-9a34500cca6d = "3"
+b9e727ee-54f8-4dd1-b4fa-62a623d5ecac = "10"
 
 [awakened.spades]
 949ffbc9-19aa-444d-ba92-11ff36670950 = "Impulse"
@@ -81,6 +84,9 @@ ead57508-17b7-44a8-b52a-8d5ea98263ed = "4"
 975b107d-e768-4351-b696-d1de18617add = "7"
 a1a101d8-249f-4f0a-9575-138f8092a001 = "10"
 8fb8c131-98dd-4e5c-a5e9-a263556876c7 = "9"
+05651d38-f93d-4331-9025-41cef9083c4d = "3"
+4cb450e0-1dac-4b5a-9892-777e91bdc445 = "8"
+dab6a4d5-5dc7-4566-a259-9c55f5dcd8fd = "2"
 
 [awakened.diamonds]
 bd636b5d-7308-4e1b-be8a-0ce9ec7afa65 = "8"
@@ -97,6 +103,7 @@ de16d9d5-0f6d-4e00-966e-5b8af7595189 = "7"
 a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 d85b986f-4d1e-40ae-a5de-9d64ae7221f2 = "5"
 d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
+55e9298c-f316-44c2-be94-cab0220782f1 = "6"
 
 [awakened.time]
 0243b68f-de93-463c-88e2-cb69da875acf = "Matriarch"
@@ -105,6 +112,9 @@ d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
 8d791685-370a-489e-a821-97e49a8fe038 = "Lost Soul"
 639c7947-59ab-4095-961e-cd681ea74077 = "???"
 
+[awakened.train]
+2d525aeb-a7c9-4398-9fcd-ccb230d864d5 = "7"
+0cfcc873-4f82-4f1e-9a05-494da68400e5 = "10"
 [face]
 [face.shame]
 d7e84cec-3a97-4cc3-854c-263abd6217df = "Ivel"
