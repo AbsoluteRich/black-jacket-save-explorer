@@ -3,6 +3,11 @@
 cf4f9678-d3ba-4de4-8321-f731a5c2281a = "5"
 ca49f2d9-1c50-45c7-a52e-0dd6228478c9 = "4"
 e3dc3323-8471-4586-aec6-15abd1b29988 = "6"
+0fde2fe0-e9e2-4d54-9fb0-fde21ae786ad = "8"
+fbc5630a-d604-42dc-850a-ac35e71814d6 = "10"
+cc44dce2-47fb-4170-b969-88c4c6bf51f9 = "3"
+ad6b57ff-d0e0-4544-af09-da76fccbf8ad = "7"
+40f5e5f8-3193-4723-9ac2-aae2b9c512e7 = "9"
 
 [blank.greed]
 99f0cd1c-d90f-4c16-976a-6d308627b29f = "3"
@@ -29,6 +34,9 @@ f875dd02-d70e-46f8-b225-9c4643c26960 = "3"
 c8534bc9-8639-499e-8764-b4c45aa205e4 = "5"
 0118d82b-7865-4dd6-87d4-030b356e4f13 = "8"
 770e5522-61a8-4401-9265-3fc2b19df968 = "9"
+
+[blank.flames]
+a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 
 [awakened]
 [awakened.clubs]
@@ -109,3 +117,8 @@ b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
 [face.vice]
 84116a01-a0b1-499a-804c-2a6c92950749 = "Mania"
 73642f80-b1f2-42ff-8891-ba3ee79e1c90 = "Virtue (Dead)"
+
+[face.family]
+c281dd8b-d292-43d6-bb0c-b0dcf92e7b61 = "Niv"
+e90b18bd-9630-44dd-943d-b7b119b440d6 = "Elisabeth"
+805bfc67-bf3d-4787-acaa-d67d56fcbc42 = "The Black Jacket"
