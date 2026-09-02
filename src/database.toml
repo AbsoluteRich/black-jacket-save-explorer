@@ -40,6 +40,15 @@ c8534bc9-8639-499e-8764-b4c45aa205e4 = "5"
 [blank.flames]
 a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 
+[blank.chips]
+40695a49-f603-409d-8324-9ef1f393bfa4 = "4"
+6df7fc74-2922-426e-b6c1-8a7562c31c9b = "3"
+5214600c-1aa7-487d-9231-677b03cc432b = "9"
+132da7ee-6246-4e91-985b-58ca85d16e5e = "6"
+44316dbe-ddd7-458a-87be-a2289a98134e = "7"
+b554a980-7137-4024-bf06-cb60ac549b9e = "8"
+82380c9f-1000-4982-a835-b308e1d6f220 = "2"
+a180f91f-5577-4c7f-8682-f4db473017f6 = "10"
 [awakened]
 [awakened.clubs]
 4afcfe86-0166-46e5-a107-f4467cdfe09f = "Ace"
@@ -117,6 +126,9 @@ d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
 0cfcc873-4f82-4f1e-9a05-494da68400e5 = "10"
 f0866d7d-9938-4873-b5c2-212a134aea56 = "3"
 91275e9a-2db1-4dd9-8871-5e6c8c878d91 = "6"
+
+[awakened.chips]
+21c1a831-1cc8-4ca9-b911-11049ba90562 = "Ace"
 [face]
 [face.shame]
 d7e84cec-3a97-4cc3-854c-263abd6217df = "Ivel"
@@ -134,3 +146,8 @@ b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
 c281dd8b-d292-43d6-bb0c-b0dcf92e7b61 = "Niv"
 e90b18bd-9630-44dd-943d-b7b119b440d6 = "Elisabeth"
 805bfc67-bf3d-4787-acaa-d67d56fcbc42 = "The Black Jacket"
+
+[face.royals]
+006e4cc2-070e-4b98-9b20-bc4af1a3b55c = "King"
+1cd86866-489f-46ed-8bc4-27cdce582bb6 = "Jack"
+a3da8fe2-1a5b-4738-8a19-4ab89361db4f = "Queen"
