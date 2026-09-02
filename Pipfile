@@ -6,10 +6,8 @@ name = "pypi"
 [packages]
 tomlkit = "*"
 platformdirs = "*"
-flatten-dict = "*"
 
 [dev-packages]
-toml-sort = "*"
 auto-py-to-exe = "*"
 
 [requires]
