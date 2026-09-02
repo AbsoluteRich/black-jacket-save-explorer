@@ -5,15 +5,19 @@ def prompt_entry():
     group = input("Card type (blank/awakened/face): ").lower()
 
     if group == "face":
-        suit_or_set = input("Set: ")
+        set_or_suit = input("Set: ")
     else:
-        suit_or_set = input("Suit: ")
+        set_or_suit = input("Suit: ")
 
     # We're not doing comparisons, so casefold is unnecessarily aggressive
-    suit_or_set = suit_or_set.lower()
-    value = input("Value: ").title()
+    set_or_suit = set_or_suit.lower()
 
-    return group, suit_or_set, value
+    if group == "face":
+        name_or_value = input("Name: ").title()
+    else:
+        name_or_value = input("Value: ").title()
+
+    return group, set_or_suit, name_or_value
 
 
 if __name__ == "__main__":
@@ -32,11 +36,12 @@ if __name__ == "__main__":
             hollow = save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"]
             if hollow:
                 save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"] = False  # fmt: skip
+            save.save()
 
             try:
                 print("What card is this?")
                 group, suit_or_set, value = prompt_entry()
-                data.insert_or_create(database, group, suit_or_set, value)
+                data.insert_or_create(database, value, group, suit_or_set, guid)
 
             finally:
                 # fmt: off
@@ -44,6 +49,7 @@ if __name__ == "__main__":
                 save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Sliced"] = False
                 if hollow:
                     save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"] = True
+                save.save()
                 # fmt: on
 
     print("*** Deck Analysis ***")

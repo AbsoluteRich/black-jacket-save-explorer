@@ -3,15 +3,15 @@ import json
 from typing import Any
 
 import tomlkit as toml
-from tomlkit.exceptions import NonExistentKey
 
 import config
 import main
 
 
 class File(abc.ABC):
-    def __init__(self, data: dict) -> None:
-        self.data = data
+    @abc.abstractmethod
+    def __init__(self) -> None:
+        self.data = {}
 
     def __getitem__(self, key: Any) -> Any:
         return self.data[key]
@@ -28,7 +28,7 @@ class File(abc.ABC):
 class Save(File):
     def __init__(self) -> None:
         with open(config.GAME_SAVE) as f:
-            super().__init__(json.load(f))
+            self.data = json.load(f)
 
     def save(self) -> None:
         with open(config.GAME_SAVE, "w") as f:
@@ -38,7 +38,7 @@ class Save(File):
 class Database(File):
     def __init__(self) -> None:
         with open(config.DATABASE_FILE) as f:
-            super().__init__(toml.load(f))
+            self.data: toml.TOMLDocument = toml.load(f)
 
     def find(self, to_find: str) -> tuple[str, str, str] | None:
         for data_group in self.data:
@@ -58,7 +58,7 @@ class Database(File):
 
 
 def insert_or_create(
-    database: Database, group: str, suit_or_set: str, value: str
+    database: Database, value: str, group: str, suit_or_set: str, guid: str
 ) -> None:
     if suit_or_set not in database[group]:
         database[group][suit_or_set] = toml.table()
@@ -77,4 +77,4 @@ if __name__ == "__main__":
             break
 
         group, suit_or_set, value = main.prompt_entry()
-        insert_or_create(database, group, suit_or_set, value)
+        insert_or_create(database, value, group, suit_or_set, guid)
