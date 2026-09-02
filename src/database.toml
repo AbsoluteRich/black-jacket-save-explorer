@@ -49,6 +49,9 @@ a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 b554a980-7137-4024-bf06-cb60ac549b9e = "8"
 82380c9f-1000-4982-a835-b308e1d6f220 = "2"
 a180f91f-5577-4c7f-8682-f4db473017f6 = "10"
+
+[blank.spades]
+741a8ae1-ba3f-49ab-ad71-1a21949f0a70 = "2"
 [awakened]
 [awakened.clubs]
 4afcfe86-0166-46e5-a107-f4467cdfe09f = "Ace"
@@ -72,6 +75,7 @@ fc9377cf-5b85-4153-9e34-c5ea6c14697b = "9"
 eb98a654-02c8-4677-9de2-6e51af207c5d = "2"
 e2c220a7-77b4-46f8-9bf6-54cde9a70e85 = "8"
 d64ab9b8-37d2-4c7b-a4f6-ba3cd357a256 = "10"
+09ee1fef-aeb6-4f3d-8f3c-6280909ed1f3 = "Ace"
 
 [awakened.tumors]
 c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
@@ -162,3 +166,5 @@ e90b18bd-9630-44dd-943d-b7b119b440d6 = "Elisabeth"
 006e4cc2-070e-4b98-9b20-bc4af1a3b55c = "King"
 1cd86866-489f-46ed-8bc4-27cdce582bb6 = "Jack"
 a3da8fe2-1a5b-4738-8a19-4ab89361db4f = "Queen"
+815591af-dcc4-4a64-afd2-c0e0b6cda1dd = "Murderer"
+f4310fb7-8258-46a4-bbd2-b0cfae8dedc7 = "Queen (Dead)"
