@@ -1,28 +1,28 @@
 [blank]
 [blank.death]
+cc44dce2-47fb-4170-b969-88c4c6bf51f9 = "3"
+ca49f2d9-1c50-45c7-a52e-0dd6228478c9 = "4"
+cf4f9678-d3ba-4de4-8321-f731a5c2281a = "5"
+e3dc3323-8471-4586-aec6-15abd1b29988 = "6"
+ad6b57ff-d0e0-4544-af09-da76fccbf8ad = "7"
 0fde2fe0-e9e2-4d54-9fb0-fde21ae786ad = "8"
 40f5e5f8-3193-4723-9ac2-aae2b9c512e7 = "9"
 fbc5630a-d604-42dc-850a-ac35e71814d6 = "10"
-cf4f9678-d3ba-4de4-8321-f731a5c2281a = "5"
-ca49f2d9-1c50-45c7-a52e-0dd6228478c9 = "4"
-e3dc3323-8471-4586-aec6-15abd1b29988 = "6"
-ad6b57ff-d0e0-4544-af09-da76fccbf8ad = "7"
-cc44dce2-47fb-4170-b969-88c4c6bf51f9 = "3"
 
 [blank.greed]
-24e00f62-4a41-4d45-864b-4a5625771cfd = "Ace"
 99f0cd1c-d90f-4c16-976a-6d308627b29f = "3"
 aa12007a-84b3-46c6-a1fe-0b9753162e47 = "4"
 57269651-e004-4ba4-8091-117ee69e2733 = "6"
 29ad5297-3d62-4151-9c14-722a0c9ea8a5 = "7"
 2d755a3a-f25a-448e-afc9-d243542dfe0e = "8"
+24e00f62-4a41-4d45-864b-4a5625771cfd = "Ace"
 
 [blank.diamonds]
 a0fd900e-028f-4ef0-8425-44429a1e12c2 = "2"
 
 [blank.teeth]
-d21b81e4-ec5b-43fc-bb4b-f836b576e49f = "5"
 02cfa6f3-dc8a-4415-ad80-8c86a7933efe = "4"
+d21b81e4-ec5b-43fc-bb4b-f836b576e49f = "5"
 
 [blank.clubs]
 ab27719d-a490-4561-9639-948d8cdabb58 = "3"
@@ -52,10 +52,10 @@ a180f91f-5577-4c7f-8682-f4db473017f6 = "10"
 
 [awakened]
 [awakened.clubs]
+945ba3aa-7a34-4540-9b6d-69aeaf073f19 = "2"
 ecb0a093-cf6c-494a-9351-9a34500cca6d = "3"
 94842002-1962-4ff9-b4d6-77e73f23c48a = "4"
 15381889-fbdc-4aa6-8287-40e30cab712f = "6"
-945ba3aa-7a34-4540-9b6d-69aeaf073f19 = "2"
 e26cdc8c-ead1-4cdb-b9c9-1ec3887feeeb = "9"
 b9e727ee-54f8-4dd1-b4fa-62a623d5ecac = "10"
 4afcfe86-0166-46e5-a107-f4467cdfe09f = "Ace"
@@ -75,8 +75,8 @@ fc9377cf-5b85-4153-9e34-c5ea6c14697b = "9"
 d64ab9b8-37d2-4c7b-a4f6-ba3cd357a256 = "10"
 
 [awakened.tumors]
-74c5c094-d231-4c8b-9f41-4e859e412c81 = "6"
 c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
+74c5c094-d231-4c8b-9f41-4e859e412c81 = "6"
 
 [awakened.teeth]
 36c72096-c03a-4a93-9fb2-83f14e306b08 = "2"
