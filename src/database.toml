@@ -46,6 +46,14 @@ c8534bc9-8639-499e-8764-b4c45aa205e4 = "5"
 
 [blank.flames]
 a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
+311bd26a-6668-4f0d-8f47-6c5d8e044eda = "4"
+512da6a5-d146-409f-8f18-751899ba065d = "8"
+aefcee37-108f-45cc-b794-0238a193a0b8 = "10"
+569d2f40-f13e-49b8-841b-368e550df9db = "7"
+6f4eed13-d863-4284-b9b5-123f107e1e63 = "3"
+c14e5634-baa2-418b-b96f-2cf4d8247aee = "2"
+91195d98-0ddf-4068-a6c9-8c944de84d6c = "6"
+b5bf62bc-ad3d-48fd-abd6-038d3f140ca0 = "5"
 
 [blank.chips]
 40695a49-f603-409d-8324-9ef1f393bfa4 = "4"
@@ -59,6 +67,9 @@ a180f91f-5577-4c7f-8682-f4db473017f6 = "10"
 
 [blank.spades]
 741a8ae1-ba3f-49ab-ad71-1a21949f0a70 = "2"
+
+[blank.tumors]
+bde2c650-2674-495f-9f32-780bc9087723 = "9"
 [awakened]
 [awakened.clubs]
 4afcfe86-0166-46e5-a107-f4467cdfe09f = "Ace"
@@ -90,6 +101,9 @@ c9c79fe6-5c29-4a4b-98ef-c6ad6fa3daca = "3"
 5dfc83c4-59b2-4685-8744-d4160c4b9d35 = "4"
 c72f9fc4-af3a-4dfb-ac3d-5ca22a349b09 = "5"
 31fb7b87-7d6a-4ae6-9b85-c244d79dcbe8 = "7"
+f72b889c-f40b-4dee-ab0d-507e40afd3b5 = "9"
+82c733c9-3ff4-4d72-ae86-e159918c5e5d = "2"
+95eeef47-ce54-4350-93d7-2c3281c6ac4d = "8"
 
 [awakened.teeth]
 0646b0bc-eb9d-4a97-8da2-45049f0f59d4 = "Ace"
@@ -98,6 +112,7 @@ c72f9fc4-af3a-4dfb-ac3d-5ca22a349b09 = "5"
 2291b02c-b908-4b3b-97b2-464683a8430f = "4"
 36c72096-c03a-4a93-9fb2-83f14e306b08 = "2"
 17953d18-9a42-4218-a11b-849c84f9fc18 = "6"
+f927ced6-c664-4d56-be45-a6299cf54852 = "8"
 
 [awakened.hearts]
 ead57508-17b7-44a8-b52a-8d5ea98263ed = "4"
@@ -129,6 +144,8 @@ a1b5240c-e0d0-4ee5-8353-ef4a7b289500 = "2"
 d85b986f-4d1e-40ae-a5de-9d64ae7221f2 = "5"
 d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
 55e9298c-f316-44c2-be94-cab0220782f1 = "6"
+f2384791-8c2e-40f2-a409-bc73cec2c239 = "9"
+eb01a019-2dab-4017-b6e5-0cb0b17f6c48 = "8"
 
 [awakened.time]
 0243b68f-de93-463c-88e2-cb69da875acf = "Matriarch"
@@ -142,6 +159,8 @@ d7011daa-85af-47d2-a5fc-e92526b25024 = "Ignited Soul"
 0cfcc873-4f82-4f1e-9a05-494da68400e5 = "10"
 f0866d7d-9938-4873-b5c2-212a134aea56 = "3"
 91275e9a-2db1-4dd9-8871-5e6c8c878d91 = "6"
+bf2db75a-b3cb-46d4-a55b-3e4ca3555e0a = "5"
+3a5f48af-727b-4188-ba04-50b5835d1fb9 = "8"
 
 [awakened.chips]
 21c1a831-1cc8-4ca9-b911-11049ba90562 = "Ace"
@@ -154,6 +173,8 @@ c2887c61-f1e3-4ade-ad02-b8845082cb53 = "9"
 067b4db0-4298-4713-b9d5-1a501dd07927 = "8"
 889dd768-e346-4051-96ec-e939179d9bd4 = "10"
 
+[awakened.falmes]
+f2384791-8c2e-40f2-a409-bc73cec2c239 = "9"
 [face]
 [face.shame]
 d7e84cec-3a97-4cc3-854c-263abd6217df = "Ivel"
@@ -177,6 +198,8 @@ a6768f72-dfc7-4c4d-bd78-7066789c0200 = "Vice (Murderer)"
 c281dd8b-d292-43d6-bb0c-b0dcf92e7b61 = "Niv"
 e90b18bd-9630-44dd-943d-b7b119b440d6 = "Elisabeth"
 805bfc67-bf3d-4787-acaa-d67d56fcbc42 = "The Black Jacket"
+6f822f2d-0241-4d33-ab53-dc4bc637609d = "Playtime!"
+4a1ad9af-5928-44e9-af82-5cb17b5c7640 = "Broken"
 
 [face.royals]
 006e4cc2-070e-4b98-9b20-bc4af1a3b55c = "King"
