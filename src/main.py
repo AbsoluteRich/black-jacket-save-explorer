@@ -1,79 +1,110 @@
+from nicegui import ui
+
 import data
 
-
-def prompt_entry():
-    group = input("Card type (blank/awakened/face): ").lower()
-
-    if group == "face":
-        set_or_suit = input("Set: ")
-    else:
-        set_or_suit = input("Suit: ")
-
-    # We're not doing comparisons, so casefold is unnecessarily aggressive
-    set_or_suit = set_or_suit.lower()
-
-    if group == "face":
-        name_or_value = input("Name: ").title()
-    else:
-        name_or_value = input("Value: ").title()
-
-    return group, set_or_suit, name_or_value
-
-
-if __name__ == "__main__":
+if __name__ in {"__main__", "__mp_main__"}:
     save = data.Save()
     database = data.Database()
 
-    print("*** Data Collection ***")
-    for current in range(len(save["DeckSave"]["GameCardSaves"])):  # type: ignore
-        guid = save["DeckSave"]["GameCardSaves"][current]["GameCardGuid"]
+    ui.notify(
+        "Unknown cards detected! Please declare them in the Data Collector.",
+        type="warning",
+    )
 
-        if database.find(guid) is None:  # type: ignore
-            print(f"{guid} does not exist. Marking it as bloody.")
+    with ui.tabs().classes("w-full") as tabs:
+        collector = ui.tab("Data Collector")
+        viewer = ui.tab("Deck Viewer")
+        db = ui.tab("Known Cards")
 
-            save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Bloody"] = True
-            save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Sliced"] = True
-            hollow = save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"]
-            if hollow:
-                save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"] = False  # fmt: skip
-            save.save()
+    with ui.tab_panels(tabs, value=collector).classes("w-full"):
+        with ui.tab_panel(collector):
+            ui.linear_progress(0.5)
+            ui.label("What card is this?")
+            ui.radio(["Blank", "Awakened", "Face Card"]).props("inline")
+            with ui.row():
+                ui.input(
+                    label="Suit",
+                    placeholder="diamonds",
+                )
+                with ui.button(icon="info"):
+                    ui.tooltip("Type all suit names in lower case with plurals.")
+            ui.input(
+                label="Value",
+                placeholder="ace",
+            )
+            ui.button(
+                "Continue",
+                on_click=lambda: (
+                    viewer.disable() if viewer.enabled else viewer.enable()
+                ),
+            )
+        with ui.tab_panel(viewer):
+            ui.label("Second tab")
 
-            try:
-                print("What card is this?")
-                group, suit_or_set, value = prompt_entry()
-                data.insert_or_create(database, value, group, suit_or_set, guid)
+            with ui.card():
+                with ui.grid(columns=6):
+                    for current in range(len(save["DeckSave"]["GameCardSaves"])):
+                        guid = save["DeckSave"]["GameCardSaves"][current][
+                            "GameCardGuid"
+                        ]
+                        try:
+                            group, suit_or_set, value = database.find(guid)  # type: ignore
+                        except TypeError:
+                            continue
 
-            finally:
-                # fmt: off
-                save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Bloody"] = False
-                save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Sliced"] = False
-                if hollow:
-                    save["DeckSave"]["GameCardSaves"][current]["VfxOptions"]["Ghostly"] = True
-                save.save()
-                # fmt: on
+                        match group:
+                            case "awakened" | "blank":
+                                if group == "blank" and suit_or_set != "death":
+                                    ui.label(f"Blank {value} of {suit_or_set.title()}")
+                                    continue
 
-    print("*** Deck Analysis ***")
-    for current in range(len(save["DeckSave"]["GameCardSaves"])):
-        guid = save["DeckSave"]["GameCardSaves"][current]["GameCardGuid"]
-        group, suit_or_set, value = database.find(guid)  # type: ignore
+                                with (
+                                    ui.image(
+                                        f"https://blackjacket.wiki.gg/images/Card_{suit_or_set.title()}_{value}.png"
+                                    )
+                                    .classes("w-16")
+                                    .on(
+                                        "error",
+                                        lambda: print(
+                                            f"Failed https://blackjacket.wiki.gg/images/Card_{suit_or_set.title()}_{value}.png"
+                                        ),
+                                    )
+                                ):
+                                    with ui.context_menu():
+                                        ui.menu_item("Set VFX")
+                                        ui.menu_item("Replace")
+                                        ui.menu_item("Remove")
 
-        match group:
-            case "awakened":
-                try:
-                    value = int(value)
-                    print(f"Awakened {value} of {suit_or_set.title()}")
-                except ValueError:
-                    if value == "Ace":
-                        print(f"Awakened {value} of {suit_or_set.title()}")
-                    else:
-                        print(value)
+                            case "face":
+                                ui.label(value)
 
-            case "blank":
-                if suit_or_set == "death":
-                    print(f"{value} of {suit_or_set.title()}")
-                else:
-                    print(f"Blank {value} of {suit_or_set.title()}")
-            case "face":
-                print(value)
+            ui.label("Artefacts")
+            ui.label("Winner Pot Coins")
+            ui.label("Stash Coins")
+            ui.label("Seed")
 
-    input("\nPress Enter to exit.")
+            # ui.label("ChapterConfigGuid")
+            # ui.label("SoulCoinGuid")
+            # ui.label("NewDifficultyUnlocked")
+            # ui.label("OpponentsWonAgainst")
+            # ui.label("ObtainedSoulCoins")
+            # ui.label("SuitGuids")
+            # ui.label("CampaignPosition")
+            # ui.label("StartsWithBoosterChoice")
+            # ui.label("Bosses")
+            # ui.label("RunGuid")
+            # ui.label("Difficulty")
+            # ui.label("CampaignPath")
+            # ui.label("IsShopSave")
+            # ui.label("ShopBossPhase")
+            # ui.label("ShopSeed")
+            # ui.label("ShopBurnAwakenActionsTaken")
+            # ui.label("RandomSeed")
+            # ui.label("RandomState")
+            # ui.label("UsageTracker")
+            # ui.label("SecondsPlayed")
+            # ui.label("Version")
+            # ui.label("IsDemoSave")
+            # ui.label("references")
+
+    ui.run(dark=None, native=True, reload=False)
