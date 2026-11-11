@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 tomlkit = "*"
 platformdirs = "*"
+nicegui = "*"
+pywebview = "*"
 
 [dev-packages]
 auto-py-to-exe = "*"

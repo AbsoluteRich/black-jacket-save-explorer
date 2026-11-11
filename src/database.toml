@@ -275,8 +275,6 @@ b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
 d7e84cec-3a97-4cc3-854c-263abd6217df = "Ivel"
 c4a1c24c-0bef-4c20-93d6-624100604412 = "Outcast"
 2ef10a33-67d3-49a1-bd3f-d1c605a04f25 = "Crowd (Gossip)"
-b93f058d-92f7-44e9-8342-0154f35cede9 = "Crowd"
-50eb5f69-e53c-46ae-9df9-9d1402448c00 = "Ward"
 2119a86c-0ae8-4fee-81ee-b336bef14b1c = "Ivel (Ashamed)"
 6c7a3725-e7eb-4822-875e-c5660c370e53 = "Shame"
 
@@ -293,7 +291,7 @@ a6768f72-dfc7-4c4d-bd78-7066789c0200 = "Vice (Murderer)"
 [face.family]
 c281dd8b-d292-43d6-bb0c-b0dcf92e7b61 = "Niv"
 e90b18bd-9630-44dd-943d-b7b119b440d6 = "Elisabeth"
-805bfc67-bf3d-4787-acaa-d67d56fcbc42 = "The Black Jacket
+805bfc67-bf3d-4787-acaa-d67d56fcbc42 = "The Black Jacket"
 8f50063f-3185-4f34-8efd-687fa9c76323 = "Abandoned"
 6f822f2d-0241-4d33-ab53-dc4bc637609d = "Playtime!"
 4a1ad9af-5928-44e9-af82-5cb17b5c7640 = "Broken"
