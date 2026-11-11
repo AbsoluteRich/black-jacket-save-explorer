@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 tomlkit = "*"
 platformdirs = "*"
-flatten-dict = "*"
 nicegui = "*"
 pywebview = "*"
 

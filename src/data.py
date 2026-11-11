@@ -5,7 +5,6 @@ from typing import Any
 import tomlkit as toml
 
 import config
-import main
 
 
 class File(abc.ABC):
@@ -64,17 +63,3 @@ def insert_or_create(
         database[group][suit_or_set] = toml.table()
     database[group][suit_or_set][guid] = value
     database.save()
-
-
-if __name__ == "__main__":
-    print("*** Database Appender ***")
-    database = Database()
-
-    while True:
-        guid = input("GUID (leave empty to exit): ")
-
-        if guid == "":
-            break
-
-        group, suit_or_set, value = main.prompt_entry()
-        insert_or_create(database, value, group, suit_or_set, guid)
