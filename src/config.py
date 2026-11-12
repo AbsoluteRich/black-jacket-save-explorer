@@ -3,6 +3,8 @@ from pathlib import Path
 import platformdirs
 
 # Todo: Support Xbox Game Pass saves
+
+
 SAVE_FOLDER = (
     Path(platformdirs.user_data_dir() + "Low") / "Mipumi Games" / "BlackJacket"
 )

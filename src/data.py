@@ -47,7 +47,7 @@ class Database(File):
                         group = data_group
                         suit_or_set = data_suit
                         value = self.data[data_group][data_suit][key]
-                        return (group, suit_or_set, value)
+                        return group, suit_or_set, value
 
         return None
 

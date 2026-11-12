@@ -8,6 +8,7 @@ tomlkit = "*"
 platformdirs = "*"
 nicegui = "*"
 pywebview = "*"
+mwcleric = "*"
 
 [dev-packages]
 auto-py-to-exe = "*"
