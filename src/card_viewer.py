@@ -1,6 +1,5 @@
-import mwcleric
+from mwcleric.wikigg_client import Site
 from nicegui import ui
-from nicegui.elements.dialog import Dialog
 from nicegui.elements.grid import Grid
 from nicegui.elements.label import Label
 from nicegui.elements.select import Select
@@ -72,7 +71,7 @@ class CardViewer:
         self,
         save: data.Save,
         db: data.Database,
-        wiki: mwcleric.wikigg_client.Site,
+        wiki: Site,
         heading: Label,
         grid: Grid,
     ) -> None:
@@ -81,6 +80,9 @@ class CardViewer:
         self.wiki = wiki
         self.heading = heading
         self.grid = grid
+
+        self.good_cache = {}
+        self.bad_cache = set()
 
     def set_vfx(self, card_index: int) -> None:
         with ui.dialog() as dialog, ui.card():
@@ -94,14 +96,11 @@ class CardViewer:
             ui.button("Close", on_click=dialog.close)
         dialog.open()
 
-    def modify_card(
-        self,
-        card_index: int,
-    ) -> None:
-        def close_and_save(d: Dialog, s: Select):
+    def modify_card(self, card_index: int) -> None:
+        def close_and_save(s: Select):
             self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
             self.save.save()
-            d.close()
+            dialog.close()
             self.render()
 
         with ui.dialog() as dialog, ui.card():
@@ -112,17 +111,37 @@ class CardViewer:
                 options[guid] = get_readable_name(group, suit_or_set, value)
 
             selection = ui.select(options)
-            ui.button("Save", on_click=lambda s=selection: close_and_save(dialog, s))
+            ui.button("Save", on_click=lambda s=selection: close_and_save(s))
             ui.button("Cancel", on_click=dialog.close)
         dialog.open()
 
-    def remove_card(
-        self,
-        card_index: int,
-    ) -> None:
+    def remove_card(self, card_index: int) -> None:
         del self.save["DeckSave"]["GameCardSaves"][card_index]
         self.save.save()
         self.render()
+
+    def flip_card(self, card_index: int) -> None:
+        pass
+
+    def get_image_url(self, file_name: str) -> tuple[bool, str | None]:
+        # print(f"Fetching {file_name} - ", end="")
+
+        if file_name in self.good_cache:
+            # print("already positively fetched!")
+            return True, self.good_cache[file_name]
+        elif file_name in self.bad_cache:
+            # print("already negatively fetched!")
+            return False, None
+        else:
+            # print("fetching...")
+            image = self.wiki.images[file_name]
+
+            if image.imageinfo == {}:
+                self.bad_cache.add(file_name)
+                return False, None
+            else:
+                self.good_cache[file_name] = image.imageinfo["url"]
+                return True, self.good_cache[file_name]
 
     def render(self):
         cards = self.save["DeckSave"]["GameCardSaves"]
@@ -147,9 +166,9 @@ class CardViewer:
                 file_name = get_wiki_name(group, suit_or_set, value)
 
                 # Get image from the Black Jacket wiki (WARNING: API requests begin here)
-                image = self.wiki.images[file_name]
+                success, url = self.get_image_url(file_name)
 
-                if image.imageinfo == {}:
+                if not success:
                     ui.label(f"Image not found: {file_name}")
                     continue
 
@@ -157,7 +176,7 @@ class CardViewer:
                 with ui.image().classes("w-24").props(
                     "fit=contain"
                 ) as gui_image, ui.context_menu():
-                    gui_image.source = image.imageinfo["url"]
+                    gui_image.set_source(url)
 
                     ui.menu_item(
                         "Set VFX", on_click=lambda c=card_index: self.set_vfx(c)
