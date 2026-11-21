@@ -33,19 +33,19 @@ def is_card_value(unknown: str) -> bool:
 
 def get_readable_name(group: str, suit_or_set: str, value: str) -> str:
     if group.casefold() == "face":
-        res = value
+        result = value
     else:
-        res = ""
+        result = ""
 
-        if suit_or_set.casefold() != "death":
-            res += f"{group.title()} "
+        if can_be_awakened(group, suit_or_set, value):
+            result += f"{group.title()} "
 
-        res += value
+        result += value
 
         if is_card_value(value):
-            res += f" of {suit_or_set.title()}"
+            result += f" of {suit_or_set.title()}"
 
-    return res
+    return result
 
 
 def get_wiki_name(group: str, suit_or_set: str, value: str) -> str:
