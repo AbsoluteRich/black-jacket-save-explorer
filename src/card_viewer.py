@@ -55,6 +55,9 @@ def get_wiki_name(group: str, suit_or_set: str, value: str) -> str:
     if value.endswith(" (Difficulty)"):
         value = value[: -len(" (Difficulty)")]
 
+    if value == "???":
+        value = "Anglerfish"
+
     if group.casefold() == "face":
         result = f"Card {suit_or_set} {value}.png"
     else:
