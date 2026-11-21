@@ -96,7 +96,7 @@ class CardViewer:
         card_index: int,
     ) -> None:
         def close_and_save(d: Dialog, s: Select):
-            self.save["DeckSave"]["GameCardSaves"][card_index]["CardGuid"] = s.value
+            self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
             self.save.save()
             d.close()
             self.render()
