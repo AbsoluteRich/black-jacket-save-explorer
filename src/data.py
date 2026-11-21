@@ -39,15 +39,17 @@ class Database(File):
         with open(config.DATABASE_FILE) as f:
             self.data: toml.TOMLDocument = toml.load(f)
 
+    def iterate(self):
+        for group in self.data:
+            for suit_or_set in self.data[group]:
+                for guid in self.data[group][suit_or_set]:
+                    yield group, suit_or_set, guid
+
     def find(self, to_find: str) -> tuple[str, str, str] | None:
-        for data_group in self.data:
-            for data_suit in self.data[data_group]:
-                for key in self.data[data_group][data_suit]:
-                    if key == to_find:
-                        group = data_group
-                        suit_or_set = data_suit
-                        value = self.data[data_group][data_suit][key]
-                        return group, suit_or_set, value
+        for group, suit_or_set, guid in self.iterate():
+            if guid == to_find:
+                guid = self.data[group][suit_or_set][guid]
+                return group, suit_or_set, guid
 
         return None
 

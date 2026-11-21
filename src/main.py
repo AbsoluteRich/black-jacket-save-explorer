@@ -1,20 +1,13 @@
 import mwcleric as mw
 from nicegui import ui
 
-import components
+import card_viewer
 import data
 
 if __name__ in {"__main__", "__mp_main__"}:
     save = data.Save()
     database = data.Database()
     wiki = mw.wikigg_client.Site("blackjacket.wiki.gg", path="/")
-    # cargo = mw.wikigg_client.CargoClient(wiki)
-
-    # res = cargo.query(tables="Cards", fields="Cards.Suit,Cards.Value,Cards.Image", limit=10)
-    #
-    # for card in res:
-    #     for key in card:
-    #         print(f"{key}: {card[key]}")
 
     with ui.tabs().classes("w-full") as tabs:
         editor_tab = ui.tab("Save Editor")
@@ -26,7 +19,7 @@ if __name__ in {"__main__", "__mp_main__"}:
             ui.button("Add")
 
             with ui.card().classes("w-full"), ui.grid(columns=6) as grid:
-                components.render_cards(save, database, wiki, heading, grid)
+                card_viewer.render_viewer(save, database, wiki, heading, grid)
             ui.button("Edit Other Values")
 
         with ui.tab_panel(db_tab):
@@ -35,4 +28,4 @@ if __name__ in {"__main__", "__mp_main__"}:
             #   * A way to remap database entries
             ui.label("Placeholder!")
 
-    ui.run(dark=None, native=True)
+    ui.run(dark=None, native=True, reload=False)

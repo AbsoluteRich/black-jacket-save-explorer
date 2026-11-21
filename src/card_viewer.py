@@ -1,24 +1,66 @@
 import mwcleric
 from nicegui import ui
+from nicegui.elements.dialog import Dialog
 from nicegui.elements.grid import Grid
 from nicegui.elements.label import Label
+from nicegui.elements.select import Select
 
 import data
 
 
-# Helper functions
+# Helpers
 def can_be_awakened(group: str, suit_or_set: str, value: str) -> bool:
-    if suit_or_set == "Death" or suit_or_set == "Time" or group == "Face":
+    if (
+        suit_or_set.casefold() == "death"
+        or suit_or_set.casefold() == "time"
+        or group.casefold() == "face"
+    ):
         return False
 
+    return is_card_value(value)
+
+
+def is_card_value(unknown: str) -> bool:
     try:
-        int(value)
+        int(unknown)
         return True
     except ValueError:
-        if value == "Ace":
+        if unknown.casefold() == "ace":
             return True
         else:
             return False
+
+
+def get_readable_name(group: str, suit_or_set: str, value: str) -> str:
+    if group.casefold() == "face":
+        res = value
+    else:
+        res = ""
+
+        if suit_or_set.casefold() != "death":
+            res += f"{group.title()} "
+
+        res += value
+
+        if is_card_value(value):
+            res += f" of {suit_or_set.title()}"
+
+    return res
+
+
+def get_wiki_name(group: str, suit_or_set: str, value: str) -> str:
+    group = group.title()
+    suit_or_set = suit_or_set.title()
+
+    if value.endswith(" (Difficulty)"):
+        value = value[: -len(" (Difficulty)")]
+
+    if group.casefold() == "face":
+        result = f"Card {suit_or_set} {value}.png"
+    else:
+        result = f"Card {suit_or_set} {value} {group}.png"
+
+    return result
 
 
 # Callbacks
@@ -33,10 +75,30 @@ def set_vfx(card_index: int, save: data.Save) -> None:
     dialog.open()
 
 
-def modify_card(cards: data.Database) -> None:
+def modify_card(
+    card_index: int,
+    save: data.Save,
+    cards: data.Database,
+    wiki: mwcleric.wikigg_client.Site,
+    heading: Label,
+    grid: Grid,
+) -> None:
+    def close_and_save(d: Dialog, s: Select):
+        save["DeckSave"]["GameCardSaves"][card_index]["CardGuid"] = s.value
+        save.save()
+        d.close()
+        render_viewer(save, cards, wiki, heading, grid)
+
     with ui.dialog() as dialog, ui.card():
-        ui.select(cards.data)
-        ui.button("Close", on_click=dialog.close)
+        options = {}
+
+        for group, suit_or_set, guid in cards.iterate():
+            value = cards[group][suit_or_set][guid]
+            options[guid] = get_readable_name(group, suit_or_set, value)
+
+        selection = ui.select(options)
+        ui.button("Save", on_click=lambda s=selection: close_and_save(dialog, s))
+        ui.button("Cancel", on_click=dialog.close)
     dialog.open()
 
 
@@ -50,11 +112,11 @@ def remove_card(
 ) -> None:
     del save["DeckSave"]["GameCardSaves"][card_index]
     save.save()
-    render_cards(save, database, wiki, heading, grid)
+    render_viewer(save, database, wiki, heading, grid)
 
 
 # Rendering
-def render_cards(
+def render_viewer(
     save: data.Save,
     database: data.Database,
     wiki: mwcleric.wikigg_client.Site,
@@ -78,21 +140,13 @@ def render_cards(
 
             # Process GUID name mapping
             group, suit_or_set, value = res
-
-            group = group.title()
-            suit_or_set = suit_or_set.title()
-
-            if value.endswith(" (Difficulty)"):
-                value = value[: -len(" (Difficulty)")]
+            file_name = get_wiki_name(group, suit_or_set, value)
 
             # Get image from the Black Jacket wiki (WARNING: API requests begin here)
-            if group.casefold() == "face":
-                image = wiki.images[f"Card {suit_or_set} {value}.png"]
-            else:
-                image = wiki.images[f"Card {suit_or_set} {value} {group}.png"]
+            image = wiki.images[file_name]
 
             if image.imageinfo == {}:
-                ui.label(f"Image not found: {group} {suit_or_set} {value}")
+                ui.label(f"Image not found: {file_name}")
                 continue
 
             # Create a new image
@@ -104,15 +158,16 @@ def render_cards(
                 ui.menu_item("Set VFX", on_click=lambda c=card_index: set_vfx(c, save))
 
                 if can_be_awakened(group, suit_or_set, value):
-                    if group == "Blank":
+                    if group.casefold() == "blank":
                         ui.menu_item("Awaken")
-                    elif group == "Awakened":
+                    elif group.casefold() == "awakened":
                         ui.menu_item("Dampen")
-                    else:
-                        ui.menu_item("Awaken").set_enabled(False)
 
                 ui.menu_item(
-                    "Replace", on_click=lambda c=card_index: modify_card(database)
+                    "Replace",
+                    on_click=lambda c=card_index: modify_card(
+                        c, save, database, wiki, heading, grid
+                    ),
                 )
                 ui.menu_item(
                     "Remove",
