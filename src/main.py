@@ -22,8 +22,11 @@ if __name__ in {"__main__", "__mp_main__"}:
 
     with ui.tab_panels(tabs, value=editor_tab).classes("w-full"):
         with ui.tab_panel(editor_tab):
-            with ui.card().classes("w-full"):
-                components.render_cards(save, database, wiki)
+            heading = ui.label(f"Cards").classes("text-lg font-bold")
+            ui.button("Add")
+
+            with ui.card().classes("w-full"), ui.grid(columns=6) as grid:
+                components.render_cards(save, database, wiki, heading, grid)
             ui.button("Edit Other Values")
 
         with ui.tab_panel(db_tab):
