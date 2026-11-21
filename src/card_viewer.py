@@ -63,115 +63,112 @@ def get_wiki_name(group: str, suit_or_set: str, value: str) -> str:
     return result
 
 
-# Callbacks
-def set_vfx(card_index: int, save: data.Save) -> None:
-    with ui.dialog() as dialog, ui.card():
-        for vfx in save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
-            # Save needs to be explicitly called here, because of weird Python magic, bind_value bypasses __setitem__
-            ui.checkbox(vfx).bind_value(
-                save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"], vfx
-            ).on_value_change(lambda: save.save())
-        ui.button("Close", on_click=dialog.close)
-    dialog.open()
+# The big class
+class CardViewer:
+    def __init__(
+        self,
+        save: data.Save,
+        db: data.Database,
+        wiki: mwcleric.wikigg_client.Site,
+        heading: Label,
+        grid: Grid,
+    ) -> None:
+        self.save = save
+        self.db = db
+        self.wiki = wiki
+        self.heading = heading
+        self.grid = grid
 
+    def set_vfx(self, card_index: int) -> None:
+        with ui.dialog() as dialog, ui.card():
+            for vfx in self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
+                # Save needs to be explicitly called here, because of weird Python magic, bind_value bypasses
+                # __setitem__
+                ui.checkbox(vfx).bind_value(
+                    self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"],
+                    vfx,
+                ).on_value_change(lambda: self.save.save())
+            ui.button("Close", on_click=dialog.close)
+        dialog.open()
 
-def modify_card(
-    card_index: int,
-    save: data.Save,
-    cards: data.Database,
-    wiki: mwcleric.wikigg_client.Site,
-    heading: Label,
-    grid: Grid,
-) -> None:
-    def close_and_save(d: Dialog, s: Select):
-        save["DeckSave"]["GameCardSaves"][card_index]["CardGuid"] = s.value
-        save.save()
-        d.close()
-        render_viewer(save, cards, wiki, heading, grid)
+    def modify_card(
+        self,
+        card_index: int,
+    ) -> None:
+        def close_and_save(d: Dialog, s: Select):
+            self.save["DeckSave"]["GameCardSaves"][card_index]["CardGuid"] = s.value
+            self.save.save()
+            d.close()
+            self.render()
 
-    with ui.dialog() as dialog, ui.card():
-        options = {}
+        with ui.dialog() as dialog, ui.card():
+            options = {}
 
-        for group, suit_or_set, guid in cards.iterate():
-            value = cards[group][suit_or_set][guid]
-            options[guid] = get_readable_name(group, suit_or_set, value)
+            for group, suit_or_set, guid in self.db.iterate():
+                value = self.db[group][suit_or_set][guid]
+                options[guid] = get_readable_name(group, suit_or_set, value)
 
-        selection = ui.select(options)
-        ui.button("Save", on_click=lambda s=selection: close_and_save(dialog, s))
-        ui.button("Cancel", on_click=dialog.close)
-    dialog.open()
+            selection = ui.select(options)
+            ui.button("Save", on_click=lambda s=selection: close_and_save(dialog, s))
+            ui.button("Cancel", on_click=dialog.close)
+        dialog.open()
 
+    def remove_card(
+        self,
+        card_index: int,
+    ) -> None:
+        del self.save["DeckSave"]["GameCardSaves"][card_index]
+        self.save.save()
+        self.render()
 
-def remove_card(
-    card_index: int,
-    save: data.Save,
-    database: data.Database,
-    wiki: mwcleric.wikigg_client.Site,
-    heading: Label,
-    grid: Grid,
-) -> None:
-    del save["DeckSave"]["GameCardSaves"][card_index]
-    save.save()
-    render_viewer(save, database, wiki, heading, grid)
+    def render(self):
+        cards = self.save["DeckSave"]["GameCardSaves"]
 
+        self.heading.set_text(f"Cards ({len(cards)})")
+        self.grid.clear()
 
-# Rendering
-def render_viewer(
-    save: data.Save,
-    database: data.Database,
-    wiki: mwcleric.wikigg_client.Site,
-    heading: Label,
-    grid: Grid,
-) -> None:
-    cards = save["DeckSave"]["GameCardSaves"]
+        with self.grid:
+            for card_index in range(len(cards)):
+                # Read the save file for the current GUID
+                guid = self.save["DeckSave"]["GameCardSaves"][card_index][
+                    "GameCardGuid"
+                ]
+                res = self.db.find(guid)
 
-    heading.set_text(f"Cards ({len(cards)})")
-    grid.clear()
+                if res is None:
+                    ui.label(f"Unknown GUID: {guid}")
+                    continue
 
-    with grid:
-        for card_index in range(len(cards)):
-            # Read the save file for the current GUID
-            guid = save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"]
-            res = database.find(guid)
+                # Process GUID name mapping
+                group, suit_or_set, value = res
+                file_name = get_wiki_name(group, suit_or_set, value)
 
-            if res is None:
-                ui.label(f"Unknown GUID: {guid}")
-                continue
+                # Get image from the Black Jacket wiki (WARNING: API requests begin here)
+                image = self.wiki.images[file_name]
 
-            # Process GUID name mapping
-            group, suit_or_set, value = res
-            file_name = get_wiki_name(group, suit_or_set, value)
+                if image.imageinfo == {}:
+                    ui.label(f"Image not found: {file_name}")
+                    continue
 
-            # Get image from the Black Jacket wiki (WARNING: API requests begin here)
-            image = wiki.images[file_name]
+                # Create a new image
+                with ui.image().classes("w-24").props(
+                    "fit=contain"
+                ) as gui_image, ui.context_menu():
+                    gui_image.source = image.imageinfo["url"]
 
-            if image.imageinfo == {}:
-                ui.label(f"Image not found: {file_name}")
-                continue
+                    ui.menu_item(
+                        "Set VFX", on_click=lambda c=card_index: self.set_vfx(c)
+                    )
 
-            # Create a new image
-            with ui.image().classes("w-24").props(
-                "fit=contain"
-            ) as gui_image, ui.context_menu():
-                gui_image.source = image.imageinfo["url"]
+                    if can_be_awakened(group, suit_or_set, value):
+                        if group.casefold() == "blank":
+                            ui.menu_item("Awaken")
+                        elif group.casefold() == "awakened":
+                            ui.menu_item("Dampen")
 
-                ui.menu_item("Set VFX", on_click=lambda c=card_index: set_vfx(c, save))
-
-                if can_be_awakened(group, suit_or_set, value):
-                    if group.casefold() == "blank":
-                        ui.menu_item("Awaken")
-                    elif group.casefold() == "awakened":
-                        ui.menu_item("Dampen")
-
-                ui.menu_item(
-                    "Replace",
-                    on_click=lambda c=card_index: modify_card(
-                        c, save, database, wiki, heading, grid
-                    ),
-                )
-                ui.menu_item(
-                    "Remove",
-                    on_click=lambda c=card_index: remove_card(
-                        c, save, database, wiki, heading, grid
-                    ),
-                )
+                    ui.menu_item(
+                        "Replace", on_click=lambda c=card_index: self.modify_card(c)
+                    )
+                    ui.menu_item(
+                        "Remove", on_click=lambda c=card_index: self.remove_card(c)
+                    )

@@ -19,7 +19,9 @@ if __name__ in {"__main__", "__mp_main__"}:
             ui.button("Add")
 
             with ui.card().classes("w-full"), ui.grid(columns=6) as grid:
-                card_viewer.render_viewer(save, database, wiki, heading, grid)
+                cv = card_viewer.CardViewer(save, database, wiki, heading, grid)
+                cv.render()
+
             ui.button("Edit Other Values")
 
         with ui.tab_panel(db_tab):

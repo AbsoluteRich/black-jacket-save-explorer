@@ -1,5 +1,6 @@
 import abc
 import json
+from collections.abc import Generator
 from typing import Any
 
 import tomlkit as toml
@@ -39,7 +40,7 @@ class Database(File):
         with open(config.DATABASE_FILE) as f:
             self.data: toml.TOMLDocument = toml.load(f)
 
-    def iterate(self):
+    def iterate(self) -> Generator[tuple[str, str, str]]:
         for group in self.data:
             for suit_or_set in self.data[group]:
                 for guid in self.data[group][suit_or_set]:
@@ -56,12 +57,3 @@ class Database(File):
     def save(self) -> None:
         with open(config.DATABASE_FILE, "w") as f:
             toml.dump(self.data, f)
-
-
-def insert_or_create(
-    database: Database, value: str, group: str, suit_or_set: str, guid: str
-) -> None:
-    if suit_or_set not in database[group]:
-        database[group][suit_or_set] = toml.table()
-    database[group][suit_or_set][guid] = value
-    database.save()
