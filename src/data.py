@@ -34,6 +34,33 @@ class Save(File):
         with open(config.GAME_SAVE, "w") as f:
             json.dump(self.data, f, indent=4)
 
+    def add_card(self, guid: str | None, card_data: dict | None = None):
+        if card_data is None:
+            if guid is None:
+                raise ValueError("`guid` must be provided if `card_data` is None!")
+
+            self.data["DeckSave"]["GameCardSaves"].append(
+                {
+                    "GameCardGuid": guid,
+                    "VfxOptions": {
+                        "Sliced": False,
+                        "Bloody": False,
+                        "Ghostly": False,
+                        "Marked": False,
+                        "WineDrip": False,
+                        "Devour": False,
+                        "Shame": False,
+                    },
+                    "CardModifiers": [],
+                    "GameCardModuleData": [],
+                }
+            )
+        else:
+            self.data["DeckSave"]["GameCardSaves"].append(card_data)
+
+        # Since this uses the underlying dictionary rather than calling __setitem__, we have to save manually here
+        self.save()
+
 
 class Database(File):
     def __init__(self) -> None:

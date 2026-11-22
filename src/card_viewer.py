@@ -30,7 +30,7 @@ class CardViewer:
         self.heading = heading
         self.grid = grid
 
-    def get_card_selection(self, callback: Callable[[Select, Dialog], None]) -> None:
+    def all_cards_selector(self, callback: Callable[[Select, Dialog], None]) -> None:
         with ui.dialog() as dialog, ui.card():
             options = {}
 
@@ -38,39 +38,12 @@ class CardViewer:
                 value = self.db["cards"][group][suit_or_set][guid]
                 options[guid] = game.get_readable_name(group, suit_or_set, value)
 
-            selection = ui.select(options)
+            selection = ui.select(options, with_input=True)
             ui.button("Save", on_click=lambda s=selection, d=dialog: callback(s, d))
             ui.button("Cancel", on_click=dialog.close)
         dialog.open()
 
     # Button callbacks
-    def add_card(self) -> None:
-        def close_and_save(s: Select, d: Dialog) -> None:
-            if s.value is None:
-                return
-
-            self.save["DeckSave"]["GameCardSaves"].append(
-                {
-                    "GameCardGuid": s.value,
-                    "VfxOptions": {
-                        "Sliced": False,
-                        "Bloody": False,
-                        "Ghostly": False,
-                        "Marked": False,
-                        "WineDrip": False,
-                        "Devour": False,
-                        "Shame": False,
-                    },
-                    "CardModifiers": [],
-                    "GameCardModuleData": [],
-                }
-            )
-            self.save.save()
-            d.close()
-            self.render()
-
-        self.get_card_selection(close_and_save)
-
     def set_vfx(self, card_index: int) -> None:
         with ui.dialog() as dialog, ui.card():
             for vfx in self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
@@ -83,6 +56,22 @@ class CardViewer:
             ui.button("Close", on_click=dialog.close)
         dialog.open()
 
+    def add_card(self) -> None:
+        def close_and_save(s: Select, d: Dialog) -> None:
+            if s.value is None:
+                return
+            self.save.add_card(guid=s.value)
+            d.close()
+            self.render()
+
+        self.all_cards_selector(close_and_save)
+
+    def duplicate_card(self, card_index: int) -> None:
+        self.save.add_card(
+            guid=None, card_data=self.save["DeckSave"]["GameCardSaves"][card_index]
+        )
+        self.render()
+
     def modify_card(self, card_index: int) -> None:
         def close_and_save(s: Select, d: Dialog) -> None:
             self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
@@ -90,12 +79,7 @@ class CardViewer:
             d.close()
             self.render()
 
-        self.get_card_selection(close_and_save)
-
-    def remove_card(self, card_index: int) -> None:
-        del self.save["DeckSave"]["GameCardSaves"][card_index]
-        self.save.save()
-        self.render()
+        self.all_cards_selector(close_and_save)
 
     def flip_card(self, card_index: int) -> None:
         guid = self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"]
@@ -116,6 +100,11 @@ class CardViewer:
                 self.save.save()
                 self.render()
                 return
+
+    def remove_card(self, card_index: int) -> None:
+        del self.save["DeckSave"]["GameCardSaves"][card_index]
+        self.save.save()
+        self.render()
 
     # UI handling
     def render(self) -> None:
@@ -152,6 +141,11 @@ class CardViewer:
                     "fit=contain"
                 ) as image, ui.context_menu():
                     image.set_source(url)
+
+                    ui.menu_item(
+                        "Duplicate",
+                        on_click=lambda c=card_index: self.duplicate_card(c),
+                    )
 
                     ui.menu_item(
                         "Set VFX", on_click=lambda c=card_index: self.set_vfx(c)
