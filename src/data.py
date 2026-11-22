@@ -40,17 +40,17 @@ class Database(File):
         with open(config.DATABASE_FILE) as f:
             self.data: toml.TOMLDocument = toml.load(f)
 
-    def iterate(self) -> Generator[tuple[str, str, str]]:
-        for group in self.data:
-            for suit_or_set in self.data[group]:
-                for guid in self.data[group][suit_or_set]:
+    def iterate_cards(self) -> Generator[tuple[str, str, str]]:
+        for group in self.data["cards"]:
+            for suit_or_set in self.data["cards"][group]:
+                for guid in self.data["cards"][group][suit_or_set]:
                     yield group, suit_or_set, guid
 
-    def find(self, to_find: str) -> tuple[str, str, str] | None:
-        for group, suit_or_set, guid in self.iterate():
+    def find_card(self, to_find: str) -> tuple[str, str, str] | None:
+        for group, suit_or_set, guid in self.iterate_cards():
             if guid == to_find:
-                guid = self.data[group][suit_or_set][guid]
-                return group, suit_or_set, guid
+                value = self.data["cards"][group][suit_or_set][guid]
+                return group, suit_or_set, value
 
         return None
 

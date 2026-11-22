@@ -34,8 +34,8 @@ class CardViewer:
         with ui.dialog() as dialog, ui.card():
             options = {}
 
-            for group, suit_or_set, guid in self.db.iterate():
-                value = self.db[group][suit_or_set][guid]
+            for group, suit_or_set, guid in self.db.iterate_cards():
+                value = self.db["cards"][group][suit_or_set][guid]
                 options[guid] = game.get_readable_name(group, suit_or_set, value)
 
             selection = ui.select(options)
@@ -99,7 +99,7 @@ class CardViewer:
 
     def flip_card(self, card_index: int) -> None:
         guid = self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"]
-        res = self.db.find(guid)
+        res = self.db.find_card(guid)
 
         # If this actually triggers, something has gone horribly wrong
         if res is None:
@@ -108,7 +108,7 @@ class CardViewer:
         group, suit_or_set, value = res
 
         change_to = "awakened" if group.casefold() == "blank" else "blank"
-        for new_guid, new_value in self.db[change_to][suit_or_set].items():
+        for new_guid, new_value in self.db["cards"][change_to][suit_or_set].items():
             if value == new_value:
                 self.save["DeckSave"]["GameCardSaves"][card_index][
                     "GameCardGuid"
@@ -130,7 +130,7 @@ class CardViewer:
                 guid = self.save["DeckSave"]["GameCardSaves"][card_index][
                     "GameCardGuid"
                 ]
-                res = self.db.find(guid)
+                res = self.db.find_card(guid)
 
                 if res is None:
                     ui.label(f"Unknown GUID: {guid}")
