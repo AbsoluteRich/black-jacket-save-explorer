@@ -15,14 +15,22 @@ if __name__ in {"__main__", "__mp_main__"}:
 
     with ui.tab_panels(tabs, value=editor_tab).classes("w-full"):
         with ui.tab_panel(editor_tab):
-            heading = ui.label(f"Cards").classes("text-lg font-bold")
-            ui.button("Add")
+            # Initialise all UI elements
+            heading = ui.label("Cards").classes("text-lg font-bold")
+            add_button = ui.button("Add")
 
-            with ui.card().classes("w-full"), ui.grid(columns=6) as grid:
-                cv = card_viewer.CardViewer(save, database, wiki, heading, grid)
-                cv.render()
+            with ui.card().classes("w-full"):
+                grid = ui.grid(columns=6)
 
-            ui.button("Edit Other Values")
+            edit_button = ui.button("Edit Other Values")
+
+            # Bind functionality to UI
+            cv = card_viewer.CardViewer(save, database, wiki, heading, grid)
+            add_button.on_click(cv.add_card)
+            edit_button.on_click(
+                lambda: ui.notify("This feature is a work in progress!")
+            )
+            cv.render()
 
         with ui.tab_panel(db_tab):
             # Todo: Implement this with:

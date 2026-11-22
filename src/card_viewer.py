@@ -1,5 +1,8 @@
+from collections.abc import Callable
+
 from mwcleric.wikigg_client import Site
 from nicegui import ui
+from nicegui.elements.dialog import Dialog
 from nicegui.elements.grid import Grid
 from nicegui.elements.label import Label
 from nicegui.elements.select import Select
@@ -67,6 +70,7 @@ def get_wiki_name(group: str, suit_or_set: str, value: str) -> str:
 
 # The big class
 class CardViewer:
+    # Private functions
     def __init__(
         self,
         save: data.Save,
@@ -83,45 +87,6 @@ class CardViewer:
 
         self.good_cache = {}
         self.bad_cache = set()
-
-    def set_vfx(self, card_index: int) -> None:
-        with ui.dialog() as dialog, ui.card():
-            for vfx in self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
-                # Save needs to be explicitly called here, because of weird Python magic, bind_value bypasses
-                # __setitem__
-                ui.checkbox(vfx).bind_value(
-                    self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"],
-                    vfx,
-                ).on_value_change(lambda: self.save.save())
-            ui.button("Close", on_click=dialog.close)
-        dialog.open()
-
-    def modify_card(self, card_index: int) -> None:
-        def close_and_save(s: Select):
-            self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
-            self.save.save()
-            dialog.close()
-            self.render()
-
-        with ui.dialog() as dialog, ui.card():
-            options = {}
-
-            for group, suit_or_set, guid in self.db.iterate():
-                value = self.db[group][suit_or_set][guid]
-                options[guid] = get_readable_name(group, suit_or_set, value)
-
-            selection = ui.select(options)
-            ui.button("Save", on_click=lambda s=selection: close_and_save(s))
-            ui.button("Cancel", on_click=dialog.close)
-        dialog.open()
-
-    def remove_card(self, card_index: int) -> None:
-        del self.save["DeckSave"]["GameCardSaves"][card_index]
-        self.save.save()
-        self.render()
-
-    def flip_card(self, card_index: int) -> None:
-        pass
 
     def get_image_url(self, file_name: str) -> tuple[bool, str | None]:
         # print(f"Fetching {file_name} - ", end="")
@@ -143,6 +108,91 @@ class CardViewer:
                 self.good_cache[file_name] = image.imageinfo["url"]
                 return True, self.good_cache[file_name]
 
+    def get_card_selection(self, callback: Callable[[Select, Dialog], None]) -> None:
+        with ui.dialog() as dialog, ui.card():
+            options = {}
+
+            for group, suit_or_set, guid in self.db.iterate():
+                value = self.db[group][suit_or_set][guid]
+                options[guid] = get_readable_name(group, suit_or_set, value)
+
+            selection = ui.select(options)
+            ui.button("Save", on_click=lambda s=selection, d=dialog: callback(s, d))
+            ui.button("Cancel", on_click=dialog.close)
+        dialog.open()
+
+    # Button callbacks
+    def add_card(self) -> None:
+        def close_and_save(s: Select, d: Dialog):
+            self.save["DeckSave"]["GameCardSaves"].append(
+                {
+                    "GameCardGuid": s.value,
+                    "VfxOptions": {
+                        "Sliced": False,
+                        "Bloody": False,
+                        "Ghostly": False,
+                        "Marked": False,
+                        "WineDrip": False,
+                        "Devour": False,
+                        "Shame": False,
+                    },
+                    "CardModifiers": [],
+                    "GameCardModuleData": [],
+                }
+            )
+            self.save.save()
+            d.close()
+            self.render()
+
+        self.get_card_selection(close_and_save)
+
+    def set_vfx(self, card_index: int) -> None:
+        with ui.dialog() as dialog, ui.card():
+            for vfx in self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
+                # Save needs to be explicitly called here, because of weird Python magic, bind_value bypasses
+                # __setitem__
+                ui.checkbox(vfx).bind_value(
+                    self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"],
+                    vfx,
+                ).on_value_change(lambda: self.save.save())
+            ui.button("Close", on_click=dialog.close)
+        dialog.open()
+
+    def modify_card(self, card_index: int) -> None:
+        def close_and_save(s: Select, d: Dialog):
+            self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
+            self.save.save()
+            d.close()
+            self.render()
+
+        self.get_card_selection(close_and_save)
+
+    def remove_card(self, card_index: int) -> None:
+        del self.save["DeckSave"]["GameCardSaves"][card_index]
+        self.save.save()
+        self.render()
+
+    def flip_card(self, card_index: int) -> None:
+        guid = self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"]
+        res = self.db.find(guid)
+
+        # If this actually triggers, something has gone horribly wrong
+        if res is None:
+            return
+
+        group, suit_or_set, value = res
+
+        change_to = "awakened" if group.casefold() == "blank" else "blank"
+        for new_guid, new_value in self.db[change_to][suit_or_set].items():
+            if value == new_value:
+                self.save["DeckSave"]["GameCardSaves"][card_index][
+                    "GameCardGuid"
+                ] = new_guid
+                self.save.save()
+                self.render()
+                return
+
+    # UI handling
     def render(self):
         cards = self.save["DeckSave"]["GameCardSaves"]
 
@@ -184,9 +234,15 @@ class CardViewer:
 
                     if can_be_awakened(group, suit_or_set, value):
                         if group.casefold() == "blank":
-                            ui.menu_item("Awaken")
+                            ui.menu_item(
+                                "Awaken",
+                                on_click=lambda c=card_index: self.flip_card(c),
+                            )
                         elif group.casefold() == "awakened":
-                            ui.menu_item("Dampen")
+                            ui.menu_item(
+                                "Dampen",
+                                on_click=lambda c=card_index: self.flip_card(c),
+                            )
 
                     ui.menu_item(
                         "Replace", on_click=lambda c=card_index: self.modify_card(c)
