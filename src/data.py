@@ -27,11 +27,11 @@ class File(abc.ABC):
 
 class Save(File):
     def __init__(self) -> None:
-        with open(config.GAME_SAVE) as f:
+        with open(config.game_save) as f:
             self.data = json.load(f)
 
     def save(self) -> None:
-        with open(config.GAME_SAVE, "w") as f:
+        with open(config.game_save, "w") as f:
             json.dump(self.data, f, indent=4)
 
     def add_card(self, guid: str | None, card_data: dict | None = None):
@@ -64,7 +64,7 @@ class Save(File):
 
 class Database(File):
     def __init__(self) -> None:
-        with open(config.DATABASE_FILE) as f:
+        with open(config.database_file) as f:
             self.data: toml.TOMLDocument = toml.load(f)
 
     def iterate_cards(self) -> Generator[tuple[str, str, str]]:
@@ -82,5 +82,5 @@ class Database(File):
         return None
 
     def save(self) -> None:
-        with open(config.DATABASE_FILE, "w") as f:
+        with open(config.database_file, "w") as f:
             toml.dump(self.data, f)

@@ -5,14 +5,14 @@ import platformdirs
 # Todo: Support Xbox Game Pass saves
 
 
-SAVE_FOLDER = (
+save_folder = (
     Path(platformdirs.user_data_dir() + "Low") / "Mipumi Games" / "BlackJacket"
 )
-GAME_SAVE = Path(SAVE_FOLDER / "campaignSave.json")
-DATABASE_FILE = Path.cwd() / "database.toml"
+game_save = Path(save_folder / "campaignSave.json")
+database_file = Path.cwd() / "database.toml"
 
-if not GAME_SAVE.exists():
+if not game_save.exists():
     raise FileNotFoundError("Game save not found!")
 
-if not DATABASE_FILE.exists():
+if not database_file.exists():
     raise FileNotFoundError("Database file not found!")

@@ -16,36 +16,38 @@ class CardViewer:
     # Private functions
     def __init__(
         self,
-        save: data.Save,
+        s: data.Save,
         db: data.Database,
         w: Site,
-        heading: Label,
-        grid: Grid,
+        lbl_card: Label,
+        grd_card: Grid,
     ) -> None:
-        self.save = save
+        self.save = s
         self.db = db
 
         self.images = wiki.ImageFetcher(w)
 
-        self.heading = heading
-        self.grid = grid
+        self.lbl_card = lbl_card
+        self.grd_card = grd_card
 
-    def all_cards_selector(self, callback: Callable[[Select, Dialog], None]) -> None:
-        with ui.dialog() as dialog, ui.card():
+    def display_card_selector(self, callback: Callable[[Select, Dialog], None]) -> None:
+        with ui.dialog() as dlg_all_cards, ui.card():
             options = {}
 
             for group, suit_or_set, guid in self.db.iterate_cards():
                 value = self.db["cards"][group][suit_or_set][guid]
                 options[guid] = game.get_readable_name(group, suit_or_set, value)
 
-            selection = ui.select(options, with_input=True)
-            ui.button("Save", on_click=lambda s=selection, d=dialog: callback(s, d))
-            ui.button("Cancel", on_click=dialog.close)
-        dialog.open()
+            sel_all_cards = ui.select(options, with_input=True)
+            ui.button(
+                "Save", on_click=lambda s=sel_all_cards, d=dlg_all_cards: callback(s, d)
+            )
+            ui.button("Cancel", on_click=dlg_all_cards.close)
+        dlg_all_cards.open()
 
     # Button callbacks
     def set_vfx(self, card_index: int) -> None:
-        with ui.dialog() as dialog, ui.card():
+        with ui.dialog() as dlg_vfx, ui.card():
             for vfx in self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"]:
                 # Save needs to be explicitly called here, because of weird Python magic, bind_value bypasses
                 # __setitem__
@@ -53,8 +55,8 @@ class CardViewer:
                     self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"],
                     vfx,
                 ).on_value_change(lambda: self.save.save())
-            ui.button("Close", on_click=dialog.close)
-        dialog.open()
+            ui.button("Close", on_click=dlg_vfx.close)
+        dlg_vfx.open()
 
     def add_card(self) -> None:
         def close_and_save(s: Select, d: Dialog) -> None:
@@ -62,24 +64,24 @@ class CardViewer:
                 return
             self.save.add_card(guid=s.value)
             d.close()
-            self.render()
+            self.render.refresh()
 
-        self.all_cards_selector(close_and_save)
+        self.display_card_selector(close_and_save)
 
     def duplicate_card(self, card_index: int) -> None:
         self.save.add_card(
             guid=None, card_data=self.save["DeckSave"]["GameCardSaves"][card_index]
         )
-        self.render()
+        self.render.refresh()
 
     def modify_card(self, card_index: int) -> None:
         def close_and_save(s: Select, d: Dialog) -> None:
             self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"] = s.value
             self.save.save()
             d.close()
-            self.render()
+            self.render.refresh()
 
-        self.all_cards_selector(close_and_save)
+        self.display_card_selector(close_and_save)
 
     def flip_card(self, card_index: int) -> None:
         guid = self.save["DeckSave"]["GameCardSaves"][card_index]["GameCardGuid"]
@@ -98,22 +100,21 @@ class CardViewer:
                     "GameCardGuid"
                 ] = new_guid
                 self.save.save()
-                self.render()
+                self.render.refresh()
                 return
 
     def remove_card(self, card_index: int) -> None:
         del self.save["DeckSave"]["GameCardSaves"][card_index]
         self.save.save()
-        self.render()
+        self.render.refresh()
 
     # UI handling
+    @ui.refreshable_method
     def render(self) -> None:
         cards = self.save["DeckSave"]["GameCardSaves"]
+        self.lbl_card.set_text(f"Cards ({len(cards)})")
 
-        self.heading.set_text(f"Cards ({len(cards)})")
-        self.grid.clear()
-
-        with self.grid:
+        with self.grd_card:
             for card_index in range(len(cards)):
                 # Read the save file for the current GUID
                 guid = self.save["DeckSave"]["GameCardSaves"][card_index][
@@ -139,8 +140,8 @@ class CardViewer:
                 # Create a new image
                 with ui.image().classes("w-24").props(
                     "fit=contain"
-                ) as image, ui.context_menu():
-                    image.set_source(url)
+                ) as img_card, ui.context_menu():
+                    img_card.set_source(url)
 
                     ui.menu_item(
                         "Duplicate",
