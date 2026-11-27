@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from mwcleric.wikigg_client import Site
+import mwcleric as mw
 from nicegui import ui
 from nicegui.elements.dialog import Dialog
 from nicegui.elements.grid import Grid
@@ -9,7 +9,7 @@ from nicegui.elements.select import Select
 
 import data
 import game
-import wiki
+import wiki_images
 
 
 class CardViewer:
@@ -18,14 +18,14 @@ class CardViewer:
         self,
         s: data.Save,
         db: data.Database,
-        w: Site,
+        w: mw.wikigg_client.Site,
         lbl_card: Label,
         grd_card: Grid,
     ) -> None:
         self.save = s
         self.db = db
 
-        self.images = wiki.ImageFetcher(w)
+        self.images = wiki_images.ImageFetcher(w)
 
         self.lbl_card = lbl_card
         self.grd_card = grd_card
@@ -54,7 +54,7 @@ class CardViewer:
                 ui.checkbox(vfx).bind_value(
                     self.save["DeckSave"]["GameCardSaves"][card_index]["VfxOptions"],
                     vfx,
-                ).on_value_change(lambda: self.save.save())
+                ).on_value_change(self.save.save)
             ui.button("Close", on_click=dlg_vfx.close)
         dlg_vfx.open()
 
@@ -170,3 +170,64 @@ class CardViewer:
                     ui.menu_item(
                         "Remove", on_click=lambda c=card_index: self.remove_card(c)
                     )
+
+
+@ui.page("/content")
+def page() -> None:
+    save = data.Save()
+    database = data.Database()
+    wiki = mw.wikigg_client.Site("blackjacket.wiki.gg", path="/")
+
+    # Initialise all UI elements
+    ui.menu()
+    lbl_cards = ui.label("Cards").classes("text-lg font-bold")
+
+    # Card viewer
+    with ui.card().classes("w-full"):
+        btn_add = ui.button("Add")
+        grd_cards = ui.grid(columns=6)
+
+    # Artefacts
+    ui.label("Artefacts").classes("text-lg font-bold")
+    with ui.card().classes("w-full"):
+        ui.label("Placeholder!")
+
+    # Footer
+    with ui.footer().classes("bg-slate-900"):
+        with ui.row().classes("size-full"):
+            # Seed - changing it is unlikely to have useful results, so this is read-only
+            with ui.row().classes("items-center gap-2 no-wrap"):
+                ui.label("Seed: ").classes("font-bold")
+                lbl_seed = ui.label()
+
+            # Stash coins
+            with ui.row().classes("items-center gap-2 no-wrap"):
+                ui.label("Stash Coins: ").classes("font-bold")
+                num_stash = (
+                    ui.number(min=0, value=0).props("dense dark").classes("w-20")
+                )
+
+            # Winner pot coins
+            with ui.row().classes("items-center gap-2 no-wrap"):
+                ui.label("Winner's Pot Coins: ").classes("font-bold")
+                num_pot = ui.number(min=0, value=0).props("dense dark").classes("w-20")
+
+            btn_edit = ui.button("Edit Other Values").props("dense")
+
+    # Bind functionality to UI
+    cv = CardViewer(save, database, wiki, lbl_cards, grd_cards)
+    btn_add.on_click(cv.add_card)
+    # Todo: This can be implemented with ui.json_editor
+    btn_edit.on_click(lambda: ui.notify("This feature is a work in progress!"))
+    cv.render()
+
+    lbl_seed.set_text(save["Seed"])
+
+    num_stash.validation = num_pot.validation = {
+        "Coins are over the cap. ALL of the excess coins will break if you gain new coins.": lambda x: x
+        <= 15
+    }
+
+    # WARNING: Abstraction breaking occurs here
+    num_stash.bind_value(save.data, "PlayerCoins").on_value_change(save.save)
+    num_pot.bind_value(save.data, "WinnersPotCoins").on_value_change(save.save)
